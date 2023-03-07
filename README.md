@@ -1,0 +1,1 @@
+- go run ./main.go generate -i ../definition.json -o ..

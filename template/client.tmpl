@@ -1,0 +1,29 @@
+import { client } from "./base";
+
+type {{ proper .name }} = {
+    id: string;
+}
+
+export class {{ proper .name }}Client {
+
+    private static endpoint: string = "{{ .endpoint }}";
+
+    private static parse{{ proper .name }}(content: any): {{ proper .name }} {
+        return {
+            id: content.id
+        }
+    }
+
+    static async find{{ proper .endpoint }}(): Promise<{{ proper .name }}[]> {
+        return (
+            await client.get({
+                endpoint: this.endpoint, 
+            })
+        ).contents.map((content: any) => this.parse{{ proper .name }}(content));
+    }
+
+    static async get{{ proper .name }}(contentId: string): Promise<{{ proper .name }}> {
+        return this.parse{{ proper .name }}(await client.get({ endpoint: this.endpoint, contentId }));
+    }
+
+}
