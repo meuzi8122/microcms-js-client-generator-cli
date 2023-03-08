@@ -1,6 +1,5 @@
 package model
 
 type Definition struct {
-	Name     string `json:"name"`
-	Endpoint string `json:"endpoint"`
+	Name string `json:"name"`
 }

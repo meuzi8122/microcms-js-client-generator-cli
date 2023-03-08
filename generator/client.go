@@ -9,6 +9,7 @@ import (
 
 	"microcms-js-client-generator-cli/model"
 
+	"github.com/gertd/go-pluralize"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -34,9 +35,17 @@ func GenerateBaseClientFile(ip string, op string) {
 
 func GenerateClientFiles(ip string, op string) {
 
+	plu := pluralize.NewClient()
+
 	funcMap := template.FuncMap{
-		"proper": func(text string) string {
-			return cases.Title(language.Und).String(text)
+		"convert": func(word string, is_title bool, is_plural bool) string {
+			if is_title {
+				word = cases.Title(language.Und).String(word)
+			}
+			if is_plural {
+				word = plu.Plural(word)
+			}
+			return word
 		},
 	}
 
@@ -66,8 +75,7 @@ func GenerateClientFiles(ip string, op string) {
 		defer fp.Close()
 
 		err = t.Execute(fp, map[string]interface{}{
-			"endpoint": d.Endpoint,
-			"name":     d.Name,
+			"name": d.Name,
 		})
 
 		if err != nil {

@@ -1,29 +1,29 @@
 import { client } from "./base";
 
-type {{ proper .name }} = {
+type {{ convert .name true false  }} = {
     id: string;
 }
 
-export class {{ proper .name }}Client {
+export class {{ convert .name true false }}Client {
 
-    private static endpoint: string = "{{ .endpoint }}";
+    private static endpoint: string = "{{ convert .name false true }}";
 
-    private static parse{{ proper .name }}(content: any): {{ proper .name }} {
+    private static parse{{ convert .name true false }}(content: any): {{ convert .name true false }} {
         return {
             id: content.id
         }
     }
 
-    static async find{{ proper .endpoint }}(): Promise<{{ proper .name }}[]> {
+    static async find{{ convert .name true true }}(): Promise<{{ convert .name true false }}[]> {
         return (
             await client.get({
                 endpoint: this.endpoint, 
             })
-        ).contents.map((content: any) => this.parse{{ proper .name }}(content));
+        ).contents.map((content: any) => this.parse{{ convert .name true false }}(content));
     }
 
-    static async get{{ proper .name }}(contentId: string): Promise<{{ proper .name }}> {
-        return this.parse{{ proper .name }}(await client.get({ endpoint: this.endpoint, contentId }));
+    static async get{{ convert .name true false }}(contentId: string): Promise<{{ convert .name true false }}> {
+        return this.parse{{ convert .name true false }}(await client.get({ endpoint: this.endpoint, contentId }));
     }
 
 }
